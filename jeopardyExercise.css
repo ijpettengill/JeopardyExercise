@@ -1,0 +1,73 @@
+body {
+    margin: 0px auto;
+    min-height: 1000px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), 70%, rgba(0, 0, 0, 0)), url(assets/empty_set.jpg);
+    background-position: top;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  #board {
+    border: 1px solid black;
+    min-height: 600px;
+  }
+  
+  #category-row {
+    position: relative;
+  }
+  
+  td {
+    border: 1px solid white;
+  }
+  
+  td div {
+    max-width: 100%;
+    height: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    overflow: hidden;
+  }
+  
+  .hover:last-child:hover {
+    box-shadow: 15px 15px 30px #000000;
+    z-index: 2;
+    -ms-transition: all 200ms ease-in;
+    -moz-transition: all 200ms ease-in;
+    transition: all 200ms ease-in;
+    font-size: .8rem;
+    padding: 1rem;
+    filter: brightness(.8);
+    overflow: hidden;
+  }
+  
+  tbody {
+    padding: 10px;
+  }
+  
+  th {
+    border: 1px solid white;
+    font-family: Babel;
+    letter-spacing: 3px;
+    text-transform: capitalize;
+    width: 150px;
+    overflow: hidden;
+  }
+  
+  tr {
+    border: 1px solid white;
+    font-family: Abel;
+    font-size: 0.8rem;
+    text-shadow: 1px 1px 10px rgb(9, 9, 9), 1px 1px 10px #ccc;
+    text-transform: capitalize;
+    width: 150px;
+    overflow: hidden;
+  }
+
+  .btn-floating i {
+    font-size: 1.5rem;
+  }
+  
