@@ -1,4 +1,4 @@
-const apiUrl = "https://jservice.io/api/";
+const apiUrl = "https://jservice.io/";
 const catagoryNumber = 6;
 const CAT_NUM_CLUES = 5;
 const CAT_COUNT = 100;
@@ -24,7 +24,48 @@ async function setupAndStart() {
     }
     fillTable();
 }
+let board = []; // the board doesnt 'change', but the pieces get add so I use let
 
+
+
+function makeBoard() {
+  for (let y = 0; y < HEIGHT; y++) {
+    board.push(Array.from({ length: WIDTH }));
+  }
+}//this sets the board limits here instead of making a table in html
+
+
+
+function makeTheBoard() {
+  const board = document.getElementById('board');
+
+  
+  const top = document.createElement('tr');
+  top.setAttribute('id', 'column-top');
+  top.addEventListener('click', handleClick);//this makes it so all if the player
+  //'interaction' is with the top row.  kinds like they are dropping the pieces in.
+
+  for (let x = 0; x < WIDTH; x++) {
+    const headCell = document.createElement('td');
+    headCell.setAttribute('id', x);
+    top.append(headCell);
+  }
+
+  board.append(top);
+
+  // make main part of board
+  for (let y = 0; y < HEIGHT; y++) {
+    const row = document.createElement('tr');
+
+    for (let x = 0; x < WIDTH; x++) {
+      const cell = document.createElement('td');
+      cell.setAttribute('id', `${y}-${x}`);
+      row.append(cell);
+    }
+
+    board.append(row);
+  }
+}
 
 function buildContainerAndTable() {
 
@@ -56,7 +97,7 @@ function buildTopRow() {
      
         const gameTable = document.querySelector("#board");
    
-        //  empty table categories jQuery = $('thead').empty(); //
+        
         while (topHead.lastChild) {
             topHead.removeChild(topHead.lastChild);
         }
