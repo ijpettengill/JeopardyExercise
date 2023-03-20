@@ -12,60 +12,23 @@ const bodyHTML = document.querySelector("body");
 const gameBoard = document.querySelector("#gameContainer");
 const tBody = document.querySelectorAll("td");
 
+const FSBtn = document.createElement('button');
+const btnDiv = document.createElement("div");
+btnDiv.classList.add("container");
+//handleBtnClick(FSBtn, bodyHTML);
 
 // Set up and start game function //
 async function setupAndStart() {
-    showLoader();
+   // showLoader();
     ongoingGame = false;
-    let catIds = await getCategoryIds();
+    let catIds = await getCategory();
     categories = [];
     for (let catId of catIds) {
         categories.push(await getCategory(catId));
     }
     fillTable();
 }
-let board = []; // the board doesnt 'change', but the pieces get add so I use let
 
-
-
-function makeBoard() {
-  for (let y = 0; y < HEIGHT; y++) {
-    board.push(Array.from({ length: WIDTH }));
-  }
-}//this sets the board limits here instead of making a table in html
-
-
-
-function makeTheBoard() {
-  const board = document.getElementById('board');
-
-  
-  const top = document.createElement('tr');
-  top.setAttribute('id', 'column-top');
-  top.addEventListener('click', handleClick);//this makes it so all if the player
-  //'interaction' is with the top row.  kinds like they are dropping the pieces in.
-
-  for (let x = 0; x < WIDTH; x++) {
-    const headCell = document.createElement('td');
-    headCell.setAttribute('id', x);
-    top.append(headCell);
-  }
-
-  board.append(top);
-
-  // make main part of board
-  for (let y = 0; y < HEIGHT; y++) {
-    const row = document.createElement('tr');
-
-    for (let x = 0; x < WIDTH; x++) {
-      const cell = document.createElement('td');
-      cell.setAttribute('id', `${y}-${x}`);
-      row.append(cell);
-    }
-
-    board.append(row);
-  }
-}
 
 function buildContainerAndTable() {
 
@@ -128,7 +91,7 @@ function buildCluesByCategory() {
         const row = document.createElement("tr");
         for (let catID = 0; catID < catagoryNumber; catID++) {
             const cell = document.createElement("td");
-            cell.classList.add("center-align", "indigo", "darken-4");
+            cell.classList.add("center-align");
             const cellDiv = document.createElement("div");
             cellDiv.setAttribute("id", `${catID}-${clueID}`);
             cellDiv.classList.add(  "center-align", "indigo", "darken-4",
@@ -149,15 +112,15 @@ function buildCluesByCategory() {
 
 async function getCategoryIds() {
    
-    const result = await axios.get(apiUrl + "categories", { params: { count: CAT_COUNT } });
-    let newCatIds = result.data.map(cat => cat.id );
-    return _.sampleSize(newCatIds, catagoryNumber);
-}
+   const result = await axios.get(apiUrl + "categories", { params: { count: CAT_COUNT}});
+   let newCatIds = result.data.map(cat => catId );
+   return _.sampleSize(newCatIds, catagoryNumber);
+ }
 
 // request data about a category to API, use map to build object with title and an Array called clues //
 // Clues array contains properties answer, question and showing set to null. //
 async function getCategory(catId) {
-    const result = await axios.get(apiUrl + "category", { params: { id: catId } });
+    const result = await axios.get(apiUrl + "category", {params: {id: catId} });
     let cat = result.data;
     let cluesArr = cat.clues;
     let randomizeClues = _.sampleSize(cluesArr, CAT_NUM_CLUES);
@@ -169,7 +132,7 @@ async function getCategory(catId) {
     return { title: cat.title, clues }
 }
 
-// Fill the table, Markup functions are in seperat/ed js file /
+
 async function fillTable() {
     buildContainerAndTable();
     buildTopRow();
@@ -197,30 +160,5 @@ function handleClick(e) {
     else {
         return
     }
-}
-
-// Function to handle start/reset button click //
-function  handleBtnClick(FSBtn) {
-    FSBtn.addEventListener('click', (e) => {
-        snd.play();
-        removeIntro();
-
-        if (ongoingGame === false) {
-            setTimeout(function () {
-                setupAndStart()
-                FSBtn.classList.remove("pulse");
-                FSBtn.innerHTML = '<i class="large material-icons center">restore</i>';
-            }, SHORT_DELAY);
-            setTimeout(() => { removeLoader() }, LONG_DELAY);
-        }
-        else if (ongoingGame === true) {
-            categories = [];
-            setTimeout(function () {
-                $("#firstsplash-btn").on("click", setupAndStart());
-            }, LONG_DELAY);
-            setTimeout(() => { removeLoader() }, LONG_DELAY);
-           return
-        }    
-    }); 
 }
 
